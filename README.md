@@ -10,12 +10,12 @@
 ## Installation Guide (Unix Systems)
 
 - Install Neovim (>0.9) using Homebrew or your preferred method.
-> brew install neovim
+> <code>brew install neovim</code>
 - Clear any previous config
-> rm -rf ~/.config/nvim && rm -rf ~/.local/share/nvim
+> <code>rm -rf ~/.config/nvim && rm -rf ~/.local/share/nvim </code>
 - Create the directory 
-> mkdir ~/.config/nvim && cd ~/.config/nvim
+> <code>mkdir ~/.config/nvim && cd ~/.config/nvim</code>
 - Clone the repository
-> git clone git@github.com:cetincetindag/nvim ~/.config/nvim && nvim
+> <code>git clone git@github.com:cetincetindag/nvim ~/.config/nvim && nvim</code>
 
 
