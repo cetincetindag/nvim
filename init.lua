@@ -4,8 +4,8 @@ vim.g.loaded_netrwPlugin = 1
 require("cetincetindag.set")
 require("cetincetindag.remap")
 require("cetincetindag.packer")
-
 require("nvim-tree").setup()
+require("mason").setup()
 
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
