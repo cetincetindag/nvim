@@ -1,12 +1,10 @@
 vim.cmd [[packadd packer.nvim]]
 
 return require('packer').startup(function(use)
-    -- Packer can manage itself
     use 'wbthomason/packer.nvim'
 
     use {
         'nvim-telescope/telescope.nvim', tag = '0.1.5',
-        -- or                            , branch = '0.1.x',
         requires = { {'nvim-lua/plenary.nvim'} }
     }
 
@@ -36,7 +34,7 @@ return require('packer').startup(function(use)
     use("hrsh7th/cmp-nvim-lsp")
     use("williamboman/mason.nvim")
     use("williamboman/mason-lspconfig.nvim")
-    
+
     use {
         'nvim-tree/nvim-tree.lua',
         requires = {
@@ -48,5 +46,9 @@ return require('packer').startup(function(use)
         'nvim-lualine/lualine.nvim',
         requires = { 'nvim-tree/nvim-web-devicons', opt = true }
     }
+    if packer_bootstrap then
+        require('packer').sync()
+    end
 end)
+
 
