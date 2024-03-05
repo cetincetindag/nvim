@@ -1,11 +1,9 @@
-vim.cmd [[packadd packer.nvim]]
-
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
+require("cetincetindag.packer")
 
 require("cetincetindag.set")
 require("cetincetindag.remap")
-require("cetincetindag.packer")
 require("nvim-tree").setup()
 require("mason").setup()
 
