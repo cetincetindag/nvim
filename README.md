@@ -16,6 +16,6 @@
 - Create the directory 
 > <code>mkdir ~/.config/nvim && cd ~/.config/nvim</code>
 - Clone the repository
-> <code>git clone git@github.com:cetincetindag/nvim ~/.config/nvim && nvim</code>
+> <code>git clone https://github.com/cetincetindag/nvim.git ~/.config/nvim && nvim</code>
 
 
