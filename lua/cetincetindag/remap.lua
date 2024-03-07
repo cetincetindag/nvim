@@ -33,7 +33,7 @@ vim.keymap.set("n", "<leader><CR>", function()
 end)
 -- nvim-tree toggle
 vim.keymap.set("n", "<leader>e", function()
-    vim.cmd("NvimTreeToggle")
+    vim.cmd("NvimTreeFocus")
 end)
 -- navigation
 vim.keymap.set("n", "<C-h>", "<C-w>h")
