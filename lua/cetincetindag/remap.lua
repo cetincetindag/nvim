@@ -1,5 +1,6 @@
 -- set leader
 vim.g.mapleader = " "
+vim.g.maplocalleader = "//"
 -- netrw
 vim.keymap.set("n", "<leader>pv",vim.cmd.Ex)
 -- move line up/down
@@ -31,15 +32,15 @@ vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><
 vim.keymap.set("n", "<leader><CR>", function()
     vim.cmd("so")
 end)
--- nvim-tree toggle
-vim.keymap.set("n", "<leader>e", function()
-    vim.cmd("NvimTreeFocus")
-end)
 -- navigation
 vim.keymap.set("n", "<C-h>", "<C-w>h")
 vim.keymap.set("n", "<C-j>", "<C-w>j")
 vim.keymap.set("n", "<C-k>", "<C-w>k")
 vim.keymap.set("n", "<C-l>", "<C-w>l")
+-- nvim-tree toggle
+vim.keymap.set("n", "<leader>e", function()
+    vim.cmd("NvimTreeFocus")
+end)
 
 -- exit terminal mode
 vim.keymap.set("t", "<C-x>", "<C-\\><C-n><C-w>h")

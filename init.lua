@@ -1,11 +1,15 @@
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
-require("cetincetindag.packer")
 
+vim.g.mapleader = " " -- Make sure to set `mapleader` before lazy so your mappings are correct
+vim.g.maplocalleader = "\\" -- Same for `maplocalleader`
+
+require("cetincetindag.lazy")
 require("cetincetindag.set")
 require("cetincetindag.remap")
-require("nvim-tree").setup()
-require("mason").setup()
+require("cetincetindag.lsp-zero")
+require('mini.pairs').setup()
+
 
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
