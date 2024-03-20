@@ -43,6 +43,8 @@ vim.keymap.set("n", "<leader>e", function()
 end)
 --lsp zero format
 vim.keymap.set("n", "<leader>fa", "<cmd>LspZeroFormat<CR><esc>")
-
+--copilot disable and enable
+vim.keymap.set("n", "<leader>cpd", "<cmd>Copilot disable<CR><cmd>LspRestart<CR>")
+vim.keymap.set("n", "<leader>cpe", "<cmd>Copilot enable<CR><cmd>LspRestart<CR>")
 -- exit terminal mode
 vim.keymap.set("t", "<C-x>", "<C-\\><C-n><C-w>h")
