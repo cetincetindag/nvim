@@ -9,8 +9,8 @@ vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 -- quit and save
 vim.keymap.set("n", "<leader>q", ":q<CR>")
 vim.keymap.set("n", "<leader>Q", ":q!<CR>")
-vim.keymap.set("n", "<leader>w", ":w<CR>")
-vim.keymap.set("n", "<leader>W", ":wq<CR>")
+-- save and format
+vim.keymap.set("n", "<leader>w", ":w<CR><cmd>LspZeroFormat<CR><esc>")
 -- buffer delete
 vim.keymap.set("n", "<leader>x", ":bd!<CR>")
 -- half page center
@@ -41,6 +41,8 @@ vim.keymap.set("n", "<C-l>", "<C-w>l")
 vim.keymap.set("n", "<leader>e", function()
     vim.cmd("NvimTreeFocus")
 end)
+--lsp zero format
+vim.keymap.set("n", "<leader>fa", "<cmd>LspZeroFormat<CR><esc>")
 
 -- exit terminal mode
 vim.keymap.set("t", "<C-x>", "<C-\\><C-n><C-w>h")
