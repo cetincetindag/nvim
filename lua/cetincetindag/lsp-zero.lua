@@ -25,4 +25,9 @@ require 'lspconfig'.prismals.setup {}
 require 'lspconfig'.svelte.setup {}
 require 'lspconfig'.tailwindcss.setup {}
 require 'lspconfig'.vuels.setup {}
+require 'lspconfig'.gopls.setup {}
 require 'lspconfig'.lua_ls.setup {}
+require 'lspconfig'.yamlls.setup {}
+require 'lspconfig'.bashls.setup {}
+require 'lspconfig'.dockerls.setup {}
+require 'lspconfig'.clangd.setup {}
