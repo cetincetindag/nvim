@@ -15,7 +15,7 @@ vim.opt.rtp:prepend(lazypath)
 return require('lazy').setup {
   {
     "folke/trouble.nvim",
-    branch = "dev", -- IMPORTANT!
+    branch = "main", -- IMPORTANT!
     keys = {
       {
         "<leader>xx",
