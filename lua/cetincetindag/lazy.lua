@@ -65,6 +65,7 @@ return require('lazy').setup {
   'nvim-treesitter/nvim-treesitter',
   'nvim-treesitter/playground',
   'nvim-lua/plenary.nvim',
+  'neoclide/coc.nvim',
   {
     "ThePrimeagen/harpoon",
     branch = "harpoon2",
@@ -72,7 +73,12 @@ return require('lazy').setup {
   },
   'mbbill/undotree',
   'tpope/vim-fugitive',
-  'github/copilot.vim',
+  {
+    "supermaven-inc/supermaven-nvim",
+    config = function()
+      require("supermaven-nvim").setup({})
+    end,
+  },
   'neovim/nvim-lspconfig',
   'hrsh7th/nvim-cmp',
   'hrsh7th/cmp-nvim-lsp',
