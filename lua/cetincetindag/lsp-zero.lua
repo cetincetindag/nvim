@@ -17,6 +17,8 @@ cmp.setup({
   }
 })
 
+require 'lspconfig'.clangd.setup {}
+require 'lspconfig'.cmake.setup {}
 require 'lspconfig'.tsserver.setup {}
 require 'lspconfig'.html.setup {}
 require 'lspconfig'.jsonls.setup {}
@@ -28,6 +30,6 @@ require 'lspconfig'.vuels.setup {}
 require 'lspconfig'.gopls.setup {}
 require 'lspconfig'.lua_ls.setup {}
 require 'lspconfig'.yamlls.setup {}
-require 'lspconfig'.bashls.setup {}
 require 'lspconfig'.dockerls.setup {}
-require 'lspconfig'.clangd.setup {}
+require 'lspconfig'.rust_analyzer.setup {}
+require 'lspconfig'.rls.setup {}

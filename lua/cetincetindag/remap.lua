@@ -1,4 +1,3 @@
--- set leader
 vim.g.mapleader = " "
 vim.g.maplocalleader = "//"
 -- netrw
@@ -12,7 +11,7 @@ vim.keymap.set("n", "<leader>Q", ":q!<CR>")
 -- save and format
 vim.keymap.set("n", "<leader>w", ":w<CR><cmd>LspZeroFormat<CR><esc>")
 -- buffer delete
-vim.keymap.set("n", "<leader>x", ":bd!<CR>")
+vim.keymap.set("n", "<leader>bd", ":bd!<CR>")
 -- half page center
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
 vim.keymap.set("n", "<C-u>", "<C-u>zz")
