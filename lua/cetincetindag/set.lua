@@ -1,4 +1,4 @@
-vim.opt.nu = false
+vim.opt.nu = true
 vim.opt.relativenumber = true
 
 vim.opt.tabstop = 2
@@ -28,9 +28,37 @@ vim.opt.cursorcolumn = false
 vim.opt.isfname:append("@-@")
 
 vim.opt.updatetime = 50
+vim.opt.timeout = true
+vim.opt.timeoutlen = 300
 
 vim.opt.splitbelow = true
 vim.opt.splitright = true
 
+vim.o.completeopt = "menuone,noselect"
+
+vim.diagnostic.config({
+  virtual_text = true,
+  signs = true,
+  underline = true,
+  update_in_insert = false,
+  severity_sort = true,
+  float = {
+    border = "rounded",
+    source = "always",
+  },
+})
+
 vim.api.nvim_command('autocmd TermOpen * startinsert')
 vim.api.nvim_command('autocmd TermOpen * setlocal nonumber norelativenumber')
+
+vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
+  vim.lsp.handlers.hover, {
+    border = "rounded",
+  }
+)
+
+vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
+  vim.lsp.handlers.signature_help, {
+    border = "rounded",
+  }
+)

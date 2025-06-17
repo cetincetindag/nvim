@@ -8,6 +8,9 @@ require("cetincetindag.lazy")
 require("cetincetindag.set")
 require("cetincetindag.remap")
 require("cetincetindag.lsp-zero")
+require("cetincetindag.autopairs-cfg")
+require("cetincetindag.dap-config")
+require("cetincetindag.build")
 
 
 local augroup = vim.api.nvim_create_augroup
@@ -24,3 +27,7 @@ autocmd('TextYankPost', {
     })
   end,
 })
+
+
+vim.diagnostic.open_float()
+
