@@ -10,7 +10,10 @@ vim.g.maplocalleader = "//"
 
 -- source cfg
 vim.keymap.set("n", "<leader><CR>", function()
-  vim.cmd("so")
+  local ft = vim.bo.filetype
+  if vim.bo.modifiable and (ft == "lua" or ft == "vim") then
+    vim.cmd("so")
+  end
 end)
 --
 -- netrw (is disabled but anyway)

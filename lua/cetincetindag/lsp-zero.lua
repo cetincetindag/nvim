@@ -1,26 +1,20 @@
 local lsp_zero = require('lsp-zero')
 
 -- Configure default keymaps and custom ones when an LSP attaches to a buffer
-lsp_zero.on_attach(function(client, bufnr)
-  -- Default keymaps
-  lsp_zero.default_keymaps({ buffer = bufnr })
-  
-  -- Custom keymaps for peek definition and other functionalities
-  local opts = { buffer = bufnr, noremap = true, silent = true }
-  
-  -- Peek definition
-  vim.keymap.set('n', 'gp', "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
-  vim.keymap.set('n', 'gP', "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
-  
-  -- Peek implementation
-  vim.keymap.set('n', 'gi', "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
-  
-  -- Code actions
-  vim.keymap.set('n', '<leader>ca', "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
-  
-  -- Rename symbol
-  vim.keymap.set('n', '<leader>rn', "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
-end)
+vim.api.nvim_create_autocmd('LspAttach', {
+  callback = function(event)
+    local bufnr = event.buf
+    local opts = { buffer = bufnr, noremap = true, silent = true }
+
+    lsp_zero.default_keymaps({ buffer = bufnr })
+
+    vim.keymap.set('n', 'gp', "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
+    vim.keymap.set('n', 'gP', "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
+    vim.keymap.set('n', 'gi', "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
+    vim.keymap.set('n', '<leader>ca', "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
+    vim.keymap.set('n', '<leader>rn', "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
+  end,
+})
 
 -- Set up Mason for easy LSP server installation
 require('mason').setup({
@@ -34,7 +28,6 @@ require('mason').setup({
 })
 
 require('mason-lspconfig').setup({
-  automatic_installation = true,
   ensure_installed = {
     'clangd',
     'cmake',
@@ -69,9 +62,9 @@ local cmp_action = lsp_zero.cmp_action()
 
 cmp.setup({
   sources = {
-    {name = 'nvim_lsp'},
-    {name = 'buffer'},
-    {name = 'path'},
+    { name = 'nvim_lsp' },
+    { name = 'buffer' },
+    { name = 'path' },
   },
   mapping = {
     ['<C-p>'] = cmp.mapping.select_prev_item(),
@@ -80,12 +73,12 @@ cmp.setup({
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
     ['<C-Space>'] = cmp.mapping.complete(),
     ['<C-e>'] = cmp.mapping.close(),
-    ['<CR>'] = cmp.mapping.confirm({ select = true }),
-    ['<Tab>'] = cmp_action.luasnip_supertab(),
+    ['<Tab>'] = cmp.mapping.confirm({ select = true }),
+    ['<CR>'] = cmp.mapping.confirm({ select = false }),
     ['<S-Tab>'] = cmp_action.luasnip_shift_supertab(),
   },
   formatting = {
-    fields = {'abbr', 'kind', 'menu'},
+    fields = { 'abbr', 'kind', 'menu' },
     format = function(entry, item)
       local menu_icon = {
         nvim_lsp = 'λ',
@@ -98,11 +91,9 @@ cmp.setup({
   },
 })
 
--- LSP Configurations
-local lspconfig = require('lspconfig')
+-- LSP Configurations (nvim 0.11+ API)
 
--- Clangd setup with proper configuration
-lspconfig.clangd.setup({
+vim.lsp.config('clangd', {
   cmd = {
     "clangd",
     "--background-index",
@@ -113,22 +104,17 @@ lspconfig.clangd.setup({
     "--offset-encoding=utf-16",
   },
   filetypes = { "c", "cpp", "objc", "objcpp", "h", "hpp" },
-  root_dir = function(fname)
-    return lspconfig.util.root_pattern(
-      'compile_commands.json',
-      'compile_flags.txt',
-      '.git'
-    )(fname) or lspconfig.util.find_git_ancestor(fname)
+  root_dir = function(bufnr)
+    return vim.fs.root(bufnr, { 'compile_commands.json', 'compile_flags.txt', '.git' })
   end,
   init_options = {
     usePlaceholders = true,
     completeUnimported = true,
-    clangdFileStatus = true
-  }
+    clangdFileStatus = true,
+  },
 })
 
--- Lua LSP setup with proper Neovim runtime recognition
-lspconfig.lua_ls.setup({
+vim.lsp.config('lua_ls', {
   settings = {
     Lua = {
       runtime = {
@@ -136,7 +122,7 @@ lspconfig.lua_ls.setup({
         path = vim.split(package.path, ';'),
       },
       diagnostics = {
-        globals = {'vim'},
+        globals = { 'vim' },
       },
       workspace = {
         library = {
@@ -152,8 +138,7 @@ lspconfig.lua_ls.setup({
   },
 })
 
--- Vim LSP setup
-lspconfig.vimls.setup({
+vim.lsp.config('vimls', {
   init_options = {
     diagnostic = {
       enable = true,
@@ -169,15 +154,15 @@ lspconfig.vimls.setup({
       fromRuntimepath = true,
       fromVimruntime = true,
     },
-  }
+  },
 })
 
--- Ensure sourcekit is set up for Swift development
-lspconfig.sourcekit.setup({})
+vim.lsp.config('sourcekit', {})
 
--- TypeScript server setup
-lspconfig.ts_ls.setup({
-  root_dir = lspconfig.util.root_pattern("package.json", "tsconfig.json", ".git"),
+vim.lsp.config('ts_ls', {
+  root_dir = function(bufnr)
+    return vim.fs.root(bufnr, { 'package.json', 'tsconfig.json', '.git' })
+  end,
   settings = {
     typescript = {
       inlayHints = {
@@ -189,9 +174,7 @@ lspconfig.ts_ls.setup({
         includeInlayFunctionLikeReturnTypeHints = true,
         includeInlayEnumMemberValueHints = true,
       },
-      format = {
-        enable = true,
-      }
+      format = { enable = true },
     },
     javascript = {
       inlayHints = {
@@ -203,20 +186,16 @@ lspconfig.ts_ls.setup({
         includeInlayFunctionLikeReturnTypeHints = true,
         includeInlayEnumMemberValueHints = true,
       },
-      format = {
-        enable = true,
-      }
-    }
+      format = { enable = true },
+    },
   },
   capabilities = vim.lsp.protocol.make_client_capabilities(),
-  on_attach = function(client, bufnr)
-    -- Enable formatting
+  on_attach = function(client, _)
     client.server_capabilities.documentFormattingProvider = true
-  end
+  end,
 })
 
--- HTML LSP setup
-lspconfig.html.setup({
+vim.lsp.config('html', {
   capabilities = vim.lsp.protocol.make_client_capabilities(),
   filetypes = { "html", "templ" },
   settings = {
@@ -234,45 +213,19 @@ lspconfig.html.setup({
   },
 })
 
--- CSS LSP setup
-lspconfig.cssls.setup({
+vim.lsp.config('cssls', {
   capabilities = vim.lsp.protocol.make_client_capabilities(),
   settings = {
-    css = {
-      validate = true,
-      lint = {
-        unknownAtRules = "ignore"
-      }
-    },
-    scss = {
-      validate = true,
-      lint = {
-        unknownAtRules = "ignore"
-      }
-    },
-    less = {
-      validate = true,
-      lint = {
-        unknownAtRules = "ignore"
-      }
-    }
-  }
+    css  = { validate = true, lint = { unknownAtRules = "ignore" } },
+    scss = { validate = true, lint = { unknownAtRules = "ignore" } },
+    less = { validate = true, lint = { unknownAtRules = "ignore" } },
+  },
 })
 
--- Tailwind CSS LSP setup
-lspconfig.tailwindcss.setup({
+vim.lsp.config('tailwindcss', {
   filetypes = {
-    "html",
-    "css",
-    "scss",
-    "javascript",
-    "javascriptreact",
-    "typescript",
-    "typescriptreact",
-    "vue",
-    "svelte",
-    "astro",
-    "templ",
+    "html", "css", "scss", "javascript", "javascriptreact",
+    "typescript", "typescriptreact", "vue", "svelte", "astro", "templ",
   },
   init_options = {
     userLanguages = {
@@ -291,33 +244,32 @@ lspconfig.tailwindcss.setup({
         invalidScreen = "error",
         invalidTailwindDirective = "error",
         invalidVariant = "error",
-        recommendedVariantOrder = "warning"
+        recommendedVariantOrder = "warning",
       },
       validate = true,
       experimental = {
         classRegex = {
           "tw`([^`]*)",
-          { "clsx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)" },
+          { "clsx\\(([^)]*)\\)",       "(?:'|\"|`)([^']*)(?:'|\"|`)" },
           { "classnames\\(([^)]*)\\)", "'([^']*)'" },
-          { "cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]" },
-          { "cn\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)" }
-        }
-      }
-    }
+          { "cva\\(([^)]*)\\)",        "[\"'`]([^\"'`]*).*?[\"'`]" },
+          { "cn\\(([^)]*)\\)",         "(?:'|\"|`)([^']*)(?:'|\"|`)" },
+        },
+      },
+    },
   },
-  root_dir = lspconfig.util.root_pattern(
-    'tailwind.config.js',
-    'tailwind.config.cjs',
-    'tailwind.config.mjs',
-    'tailwind.config.ts',
-    'postcss.config.js',
-    'postcss.config.cjs',
-    'postcss.config.mjs',
-    'postcss.config.ts',
-    'package.json',
-    'node_modules',
-    '.git'
-  ),
+  root_dir = function(bufnr)
+    return vim.fs.root(bufnr, {
+      'tailwind.config.js', 'tailwind.config.cjs', 'tailwind.config.mjs', 'tailwind.config.ts',
+      'postcss.config.js',  'postcss.config.cjs',  'postcss.config.mjs',  'postcss.config.ts',
+      'package.json', 'node_modules', '.git',
+    })
+  end,
+})
+
+vim.lsp.enable({
+  'clangd', 'lua_ls', 'vimls', 'sourcekit',
+  'ts_ls', 'html', 'cssls', 'tailwindcss',
 })
 
 -- Setup format on save for specific file types
@@ -333,8 +285,8 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 })
 
 -- Autocmd for better Tailwind CSS experience
-vim.api.nvim_create_autocmd({"BufRead", "BufNewFile"}, {
-  pattern = {"*.html", "*.jsx", "*.tsx", "*.vue", "*.svelte"},
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+  pattern = { "*.html", "*.jsx", "*.tsx", "*.vue", "*.svelte" },
   callback = function()
     -- Enable word-based completion for class attributes
     vim.opt_local.iskeyword:append("-")

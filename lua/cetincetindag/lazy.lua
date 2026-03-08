@@ -28,6 +28,13 @@ return require('lazy').setup({
     opts = {},
   },
 
+  {
+    "ellisonleao/gruvbox.nvim",
+    priority = 1000,
+    config = function()
+      vim.cmd([[colorscheme gruvbox]])
+    end
+  },
   -- Telescope for fuzzy finding
   {
     'nvim-telescope/telescope.nvim',
@@ -62,16 +69,6 @@ return require('lazy').setup({
     config = true,
   },
 
-  -- Theme
-  {
-    "rebelot/kanagawa.nvim",
-    lazy = false,
-    priority = 1000,
-    config = function()
-      vim.cmd([[colorscheme kanagawa]])
-    end,
-  },
-
   -- Treesitter for better syntax highlighting
   {
     'nvim-treesitter/nvim-treesitter',
@@ -79,8 +76,8 @@ return require('lazy').setup({
     config = function()
       require('nvim-treesitter.configs').setup({
         ensure_installed = {
-          "c", "lua", "vim", "vimdoc", "query", "javascript", 
-          "typescript", "tsx", "json", "python", "rust", "markdown", 
+          "c", "lua", "vim", "vimdoc", "query", "javascript",
+          "typescript", "tsx", "json", "python", "rust", "markdown",
           "bash", "cpp", "html", "css"
         },
         highlight = {
@@ -91,7 +88,7 @@ return require('lazy').setup({
       })
     end,
   },
-  
+
   -- Treesitter playground for inspecting syntax tree
   'nvim-treesitter/playground',
 
@@ -106,7 +103,7 @@ return require('lazy').setup({
 
       vim.keymap.set("n", "<leader>a", function() harpoon:list():append() end)
       vim.keymap.set("n", "<C-e>", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
-      
+
       vim.keymap.set("n", "<leader>1", function() harpoon:list():select(1) end)
       vim.keymap.set("n", "<leader>2", function() harpoon:list():select(2) end)
       vim.keymap.set("n", "<leader>3", function() harpoon:list():select(3) end)
@@ -195,7 +192,7 @@ return require('lazy').setup({
           folder_level = 2,
         },
       })
-      
+
       -- Key mappings for Lspsaga
       vim.keymap.set("n", "K", "<cmd>Lspsaga hover_doc<CR>")
       vim.keymap.set("n", "gd", "<cmd>Lspsaga goto_definition<CR>")
@@ -203,8 +200,8 @@ return require('lazy').setup({
       vim.keymap.set("n", "gr", "<cmd>Lspsaga finder<CR>")
     end,
     dependencies = {
-      {"nvim-tree/nvim-web-devicons"},
-      {"nvim-treesitter/nvim-treesitter"}
+      { "nvim-tree/nvim-web-devicons" },
+      { "nvim-treesitter/nvim-treesitter" }
     }
   },
 
@@ -216,17 +213,17 @@ return require('lazy').setup({
     config = function()
       require('lualine').setup({
         options = {
-          theme = 'kanagawa',
-          component_separators = { left = '', right = ''},
-          section_separators = { left = '', right = ''},
+          theme = 'gruvbox',
+          component_separators = { left = '', right = '' },
+          section_separators = { left = '', right = '' },
         },
         sections = {
-          lualine_a = {'mode'},
-          lualine_b = {'branch', 'diff', 'diagnostics'},
-          lualine_c = {'filename'},
-          lualine_x = {'encoding', 'fileformat', 'filetype'},
-          lualine_y = {'progress'},
-          lualine_z = {'location'}
+          lualine_a = { 'mode' },
+          lualine_b = { 'branch', 'diff', 'diagnostics' },
+          lualine_c = { 'filename' },
+          lualine_x = { 'encoding', 'fileformat', 'filetype' },
+          lualine_y = { 'progress' },
+          lualine_z = { 'location' }
         },
       })
     end
@@ -243,17 +240,17 @@ return require('lazy').setup({
   },
   {
     "rcarriga/nvim-dap-ui",
-    dependencies = {"mfussenegger/nvim-dap", "nvim-neotest/nvim-nio"},
+    dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
     config = function()
       local dap = require("dap")
       local dapui = require("dapui")
       dapui.setup()
-      
+
       -- Auto open dap ui when debugging starts
       dap.listeners.after.event_initialized["dapui_config"] = function()
         dapui.open()
       end
-      
+
       -- Auto close dap ui when debugging ends
       dap.listeners.before.event_terminated["dapui_config"] = function()
         dapui.close()
@@ -265,10 +262,10 @@ return require('lazy').setup({
   },
   {
     "jay-babu/mason-nvim-dap.nvim",
-    dependencies = {"williamboman/mason.nvim", "mfussenegger/nvim-dap"},
+    dependencies = { "williamboman/mason.nvim", "mfussenegger/nvim-dap" },
     config = function()
       require("mason-nvim-dap").setup({
-        ensure_installed = {"codelldb"},
+        ensure_installed = { "codelldb" },
         automatic_installation = true,
         handlers = {},
       })

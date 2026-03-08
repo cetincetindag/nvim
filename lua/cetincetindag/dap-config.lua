@@ -15,7 +15,6 @@ if mason_registry.is_installed('codelldb') then
       codelldb_path = path
     end
   end
-  
   -- Fallback to standard Mason path structure if the above fails
   if not codelldb_path then
     codelldb_path = vim.fn.stdpath('data') .. '/mason/packages/codelldb'
@@ -40,7 +39,7 @@ dap.adapters.codelldb = {
   port = '${port}',
   executable = {
     command = codelldb_adapter,
-    args = {'--port', '${port}'},
+    args = { '--port', '${port}' },
   }
 }
 
@@ -66,15 +65,15 @@ dap.configurations.cpp = {
     type = 'codelldb',
     request = 'attach',
     pid = function()
-      local output = vim.fn.system({'ps', 'aux'})
+      local output = vim.fn.system({ 'ps', 'aux' })
       local lines = vim.split(output, '\n')
       local procs = {}
       for i, line in ipairs(lines) do
-        if i > 1 then  -- Skip the header line
+        if i > 1 then -- Skip the header line
           table.insert(procs, line)
         end
       end
-      
+
       -- Display process selection
       vim.ui.select(procs, {
         prompt = 'Select process to attach:',
@@ -83,7 +82,7 @@ dap.configurations.cpp = {
         end,
       }, function(choice)
         if not choice then return end
-        
+
         -- Extract PID from the selected process line
         local pid = choice:match('%s*(%d+)')
         return pid
@@ -110,8 +109,8 @@ vim.keymap.set('n', '<leader>dr', function() dap.repl.open() end)
 vim.keymap.set('n', '<leader>du', function() dapui.toggle() end)
 
 -- Add diagnostic signs for breakpoints
-vim.fn.sign_define('DapBreakpoint', {text='🔴', texthl='', linehl='', numhl=''})
-vim.fn.sign_define('DapBreakpointCondition', {text='🟡', texthl='', linehl='', numhl=''})
-vim.fn.sign_define('DapBreakpointRejected', {text='⚪', texthl='', linehl='', numhl=''})
-vim.fn.sign_define('DapLogPoint', {text='📝', texthl='', linehl='', numhl=''})
-vim.fn.sign_define('DapStopped', {text='▶️', texthl='', linehl='', numhl=''})
+vim.fn.sign_define('DapBreakpoint', { text = '🔴', texthl = '', linehl = '', numhl = '' })
+vim.fn.sign_define('DapBreakpointCondition', { text = '🟡', texthl = '', linehl = '', numhl = '' })
+vim.fn.sign_define('DapBreakpointRejected', { text = '⚪', texthl = '', linehl = '', numhl = '' })
+vim.fn.sign_define('DapLogPoint', { text = '📝', texthl = '', linehl = '', numhl = '' })
+vim.fn.sign_define('DapStopped', { text = '▶️', texthl = '', linehl = '', numhl = '' })
