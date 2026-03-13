@@ -48,6 +48,10 @@ vim.keymap.set("n", "<leader>bd", ":bd!<CR>")
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
 vim.keymap.set("n", "<C-u>", "<C-u>zz")
 --
+-- unbind default page scroll (use gg/G instead)
+vim.keymap.set("n", "<C-f>", "<Nop>")
+vim.keymap.set("n", "<C-b>", "<Nop>")
+--
 -- append line but cursor stays in the same pos.
 vim.keymap.set("n", "J", "mzJ`z")
 --

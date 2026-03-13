@@ -51,6 +51,14 @@ vim.diagnostic.config({
 vim.api.nvim_command('autocmd TermOpen * startinsert')
 vim.api.nvim_command('autocmd TermOpen * setlocal nonumber norelativenumber')
 
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "markdown",
+  callback = function()
+    vim.opt_local.wrap = true
+    vim.opt_local.linebreak = true
+  end,
+})
+
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
   vim.lsp.handlers.hover, {
     border = "rounded",

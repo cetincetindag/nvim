@@ -229,6 +229,22 @@ return require('lazy').setup({
     end
   },
 
+  -- Terminal integration
+  {
+    'akinsho/toggleterm.nvim',
+    version = "*",
+    config = function()
+      require("toggleterm").setup({
+        size = 20,
+        open_mapping = [[<c-\>]],
+        direction = "float",
+        float_opts = {
+          border = "curved",
+        },
+      })
+    end
+  },
+
   -- Debugging
   {
     "mfussenegger/nvim-dap",
